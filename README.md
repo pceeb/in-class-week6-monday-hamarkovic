@@ -35,54 +35,54 @@ Write a variable that reads a delimiter (e.g ',') provided as the first input fi
 
         Write your code here:
         
-#!/usr/bin/env python
-Usage = """
-Mergefiles.py - version 1.0
-Convert a series of X Y tab-delimited files
-to X Y Y Y format and print them to the screen.
-Usage, where "," is the desired delimiter:
-        python Mergefiles.py "," *.txt > combinedfile.dat
-"""
+        #!/usr/bin/env python
+        Usage = """
+        Mergefiles.py - version 1.0
+        Convert a series of X Y tab-delimited files
+        to X Y Y Y format and print them to the screen.
+        Usage, where "," is the desired delimiter:
+                python Mergefiles.py "," *.txt > combinedfile.dat
+        """
 
-import sys
-import re
+        import sys
+        import re
 
-delim = sys.argv[1]
+        delim = sys.argv[1]
 
-if len(sys.argv) < 2:
-        print Usage
-else:
-        FileList= sys.argv[2:]
-        FileNum = 0
-        MasterList = []
-        Header = "lambda \t"
-        for InfileName in FileList: # statement done one per line
-                if FileNum == 0:
-                        Header += re.sub('.txt','', InfileName)
-                else:
-                        Header += delim + re.sub('.txt','', InfileName)
-                Infile = open(InfileName, 'r')
-                # The line number within each file, resets for each file
-                LineNumber = 0
-                RecordNum = 0 # The record number within the table
-                for line in Infile:
-                        if LineNumber > 0: #skipe first line
-                                Line=line.strip('\n')
-                                if FileNum == 0:
-                                        MasterList.append(Line)
-                                else:
-                                        ElementList = Line.split('\t')
-                                        if len(ElementList) > 0:
-                                                MasterList[RecordNum] += (delim + ElementList[1]) # += adding instead of replacing
-                                                RecordNum += 1
+        if len(sys.argv) < 2:
+                print Usage
+        else:
+                FileList= sys.argv[2:]
+                FileNum = 0
+                MasterList = []
+                Header = "lambda \t"
+                for InfileName in FileList: # statement done one per line
+                        if FileNum == 0:
+                                Header += re.sub('.txt','', InfileName)
+                        else:
+                                Header += delim + re.sub('.txt','', InfileName)
+                        Infile = open(InfileName, 'r')
+                        # The line number within each file, resets for each file
+                        LineNumber = 0
+                        RecordNum = 0 # The record number within the table
+                        for line in Infile:
+                                if LineNumber > 0: #skipe first line
+                                        Line=line.strip('\n')
+                                        if FileNum == 0:
+                                                MasterList.append(Line)
                                         else:
-                                                sys.stderr.write("Line %d not XY format in file %s\n" % (LineNumber,InfileName))   
-                        LineNumber += 1
-                Infile.close()
-                FileNum += 1 # the last stament in the file loop
+                                                ElementList = Line.split('\t')
+                                                if len(ElementList) > 0:
+                                                        MasterList[RecordNum] += (delim + ElementList[1]) # += adding instead of replacing
+                                                        RecordNum += 1
+                                                else:
+                                                        sys.stderr.write("Line %d not XY format in file %s\n" % (LineNumber,InfileName))   
+                                LineNumber += 1
+                        Infile.close()
+                        FileNum += 1 # the last stament in the file loop
 
-        print(Header)
-        for Item in MasterList:
-                print(Item)
+                print(Header)
+                for Item in MasterList:
+                        print(Item)
 
-        sys.stderr.write("Converted %d file(s)\n" % FileNum)
+                sys.stderr.write("Converted %d file(s)\n" % FileNum)
